@@ -1,0 +1,99 @@
+// getProperStringTime e getProperStringTimeForTrack - funzioni per avere
+// una stringa di durata formattata correttamente
+
+const getProperStringTime = (secTime) => {
+    let albumLengthString;
+    if (secTime >= 3600) {
+        const hours = Math.floor(secTime / (60 * 60));
+        const min = Math.floor((secTime - hours * 60 * 60) / 60);
+        const sec = secTime - hours * 60 * 60 - min * 60;
+
+        if (hours === 1) {
+            albumLengthString = `${hours} ora ${min} min ${sec} sec.`;
+        } else {
+            albumLengthString = `${hours} ore ${min} min ${sec} sec.`;
+        }
+    } else if (secTime >= 60) {
+        const min = Math.floor(secTime / 60);
+        const sec = secTime - min * 60;
+        albumLengthString = `${min} min ${sec} sec.`;
+    } else {
+        albumLengthString = `${secTime} sec.`;
+    }
+    return albumLengthString;
+};
+
+const getProperStringTimeForTrack = (secTime) => {
+    let trackLengthString;
+    if (secTime >= 3600) {
+        const hours = Math.floor(secTime / (60 * 60));
+        const min = Math.floor((secTime - hours * 60 * 60) / 60);
+        const sec = secTime - hours * 60 * 60 - min * 60;
+        trackLengthString = `${hours}:${min}:${sec}`;
+    } else if (secTime >= 60) {
+        const min = Math.floor(secTime / 60);
+        const sec = secTime - min * 60;
+        trackLengthString = `${min}:${sec}`;
+    } else {
+        trackLengthString = `0:${secTime}`;
+    }
+    return trackLengthString;
+};
+
+// fine funzioni getProperStringTime e getProperStringTimeForTrack
+
+// recupero l'id dell'album dall'URL
+
+const albumUrl = location.search;
+const allParam = new URLSearchParams(albumUrl);
+const albumID = allParam.get("album");
+
+console.log("album id: " + albumID);
+
+// id dell'album recuperato
+
+// recupero i dati dell'album dall'API
+
+const urlAPIAlbum = `https://striveschool-api.herokuapp.com/api/deezer/album/${albumID}`;
+
+if (albumID) {
+    fetch(urlAPIAlbum)
+        .then((res) => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                throw new Error("Errore nel recupero dettagli album");
+            }
+        })
+        .then((res) => {
+            const albumAllData = res;
+            const albumTitle = albumAllData.title;
+            const albumArtist = albumAllData.artist.name;
+            const albumArtistSmallPicture = albumAllData.artist.picture_small;
+            const albumYear = albumAllData.release_date.slice(0, 4);
+            const albumTracksNumber = albumAllData.tracks.data.length;
+            const albumLengthString = getProperStringTime(
+                Number(albumAllData.duration),
+            );
+            const arrayOfTracks = albumAllData.tracks.data;
+
+            const arrayOfTracksTitles = [];
+            const arrayOfTracksArtists = [];
+            const arrayOfTracksRank = [];
+            const arrayOfTracksLength = [];
+
+            for (let i = 0; i < arrayOfTracks.length; i++) {
+                arrayOfTracksTitles.push(arrayOfTracks[i].title);
+                arrayOfTracksArtists.push(arrayOfTracks[i].artist.name);
+                arrayOfTracksRank.push(
+                    arrayOfTracks[i].rank.toLocaleString("it-IT"),
+                );
+                arrayOfTracksLength.push(
+                    getProperStringTimeForTrack(arrayOfTracks[i].duration),
+                );
+            }
+            // inserire qui codice che utilizza i dati estratti
+
+            // fine codice che utilizza i dati estratti
+        });
+}
