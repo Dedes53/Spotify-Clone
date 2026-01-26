@@ -42,6 +42,40 @@ const getProperStringTimeForTrack = (secTime) => {
 
 // fine funzioni getProperStringTime e getProperStringTimeForTrack
 
+// getImageColor - funzione per approssimare il colore medio di un'immagine e attribuirlo ad un elemento
+// del DOM una volta che l'immagine è caricata. Prende due parametri: l'url dell'immagine e la stringa che si
+// utilizzerebbe nel css per individuare l'elemento da modificare. NB: 'load' è un evento asincrono.
+
+const getImageColor = (imageUrl, stringForQuerySelector = "body") => {
+    // creo un'immagine senza appenderla al DOM
+    const utilityImage = new Image();
+    utilityImage.crossOrigin = "Anonymous";
+    utilityImage.src = imageUrl;
+
+    // Al caricamento importo l'immagine in js grazie ad un canvas e poi la ridimensiono
+    // a 1x1 così l'algoritmo di ridimensionamento farà una media approssimata dei colori
+
+    utilityImage.addEventListener("load", () => {
+        const imageCanvas = document.createElement("canvas");
+        const drawnContext = imageCanvas.getContext("2d");
+        imageCanvas.width = 1;
+        imageCanvas.height = 1;
+        // ora comprimo l'immagine
+        drawnContext.drawImage(utilityImage, 0, 0, 1, 1); //coordinate (0,0), larghezza e altezza nel canvas di destinazione
+        // estraiamo i dati del pixel
+        const imageData = drawnContext.getImageData(0, 0, 1, 1).data;
+        const r = imageData[0];
+        const g = imageData[1];
+        const b = imageData[2];
+        const avgColor = `rgb(${r}, ${g}, ${b})`;
+        // assegniamo il colore all'elemento del DOM target
+        const x = document.querySelector(stringForQuerySelector);
+        x.style.backgroundColor = avgColor;
+    });
+};
+
+// fine funzione getImageColor
+
 // recupero l'id dell'album dall'URL
 
 const albumUrl = location.search;
@@ -66,8 +100,13 @@ if (albumID) {
             }
         })
         .then((res) => {
+            console.log(res);
+
             const albumAllData = res;
             const albumTitle = albumAllData.title;
+            const albumeImageUrlMedium = albumAllData.cover_medium;
+            const albumeImageUrlSmall = albumAllData.cover_small;
+            const albumeImageUrlBig = albumAllData.cover_big;
             const albumArtist = albumAllData.artist.name;
             const albumArtistSmallPicture = albumAllData.artist.picture_small;
             const albumYear = albumAllData.release_date.slice(0, 4);
