@@ -1,3 +1,11 @@
+// variabili globali html 
+const artistBg = document.getElementById("artistBg");
+const artistName = document.getElementById("artistName");
+const fanNumber = document.getElementById("artistFan");
+const popularList = document.getElementById("popularList");
+
+
+// variabili fetch
 const params = new URLSearchParams(location.search);
 const artistID = params.get("artist");
 
@@ -26,6 +34,10 @@ fetch(urlAPI)
         const nFan = artistData.nb_fan;
         const radio = artistData.radio;
 
+
+        artistBg.style.backgroundImage = `url(${artistPicture_xl})`;
+        artistName.innerText = artistName;
+
         // seconda fetch: canzoni dell'artista
         // bisogna fare RETURN di questa fetch per passare i dati al .then() successivo
         return fetch(`https://striveschool-api.herokuapp.com/api/deezer/artist/${artistID}/top`)
@@ -53,6 +65,23 @@ fetch(urlAPI)
         //   tracks: [ {canzone1}, {canzone2}, ... ]
         // }
 
+        // popolo la lista popularList delle canzoni popolari
+
+        for (let i = 0; i < 5; i++) {
+            const track = fullData.tracks[i];
+            const trackItem = document.createElement("li");
+            trackItem.innerHTML = `
+                <span class="track-index">${i + 1}</span>
+                <img src="${track.album.cover_small}" alt="${track.title} cover">
+                <span>${track.title}</span>
+                <span>${Math.floor(track.duration / 60)}:${(track.duration % 60).toString().padStart(2, '0')}</span>
+            `;
+
+            popularList.appendChild(trackItem);
+        }
+
+
+
         console.log("Artista:", fullData.artist);
         console.log("Canzoni:", fullData.tracks);
 
@@ -60,8 +89,5 @@ fetch(urlAPI)
 
     })
     .catch((error) => {
-        // 9. SE C'È UN ERRORE IN QUALSIASI PUNTO, FINISCO QUI
         console.error("Si è verificato un errore:", error);
-        // Puoi mostrare un messaggio all'utente
-        // document.getElementById("error-message").textContent = "Errore nel caricamento dei dati";
     });
