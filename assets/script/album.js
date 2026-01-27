@@ -27,12 +27,16 @@ const getProperStringTimeForTrack = (secTime) => {
     let trackLengthString;
     if (secTime >= 3600) {
         const hours = Math.floor(secTime / (60 * 60));
-        const min = Math.floor((secTime - hours * 60 * 60) / 60);
-        const sec = secTime - hours * 60 * 60 - min * 60;
+        const min = (
+            "00" + Math.floor((secTime - hours * 60 * 60) / 60).toString()
+        ).slice(-2);
+        const sec = (
+            "00" + (secTime - hours * 60 * 60 - min * 60).toString()
+        ).slice(-2);
         trackLengthString = `${hours}:${min}:${sec}`;
     } else if (secTime >= 60) {
         const min = Math.floor(secTime / 60);
-        const sec = secTime - min * 60;
+        const sec = ("00" + (secTime - min * 60).toString()).slice(-2);
         trackLengthString = `${min}:${sec}`;
     } else {
         trackLengthString = `0:${secTime}`;
