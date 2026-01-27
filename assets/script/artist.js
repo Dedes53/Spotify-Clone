@@ -1,6 +1,6 @@
 // variabili globali html 
 const artistBg = document.getElementById("artistBg");
-const artistName = document.getElementById("artistName");
+const artistNameElement = document.getElementById("artistName");
 const fanNumber = document.getElementById("artistFan");
 const popularList = document.getElementById("popularList");
 
@@ -16,6 +16,7 @@ const urlAPI = `https://striveschool-api.herokuapp.com/api/deezer/artist/${artis
 fetch(urlAPI)
     .then((res) => {
         if (res.ok) {
+            return res.json(); // ⚠️ AGGIUNTO: devi ritornare il JSON!
         } else {
             throw new Error("Errore nel recupero dei dettagli dell'artista");
         }
@@ -34,13 +35,17 @@ fetch(urlAPI)
         const nFan = artistData.nb_fan;
         const radio = artistData.radio;
 
+        console.log(artistPicture_xl);
+        const tracksURL = artistData.tracklist;
 
-        artistBg.style.backgroundImage = `url(${artistPicture_xl})`;
-        artistName.innerText = artistName;
+
+        artistBg.src = artistPicture_xl;
+        artistNameElement.innerText = artistName;
+        fanNumber.innerText = `${nFan.toLocaleString()} fan`;
 
         // seconda fetch: canzoni dell'artista
         // bisogna fare RETURN di questa fetch per passare i dati al .then() successivo
-        return fetch(`https://striveschool-api.herokuapp.com/api/deezer/artist/${artistID}/top`)
+        return fetch(tracksURL)
             .then(res => {
                 if (res.ok) {
                     return res.json();
@@ -66,7 +71,6 @@ fetch(urlAPI)
         // }
 
         // popolo la lista popularList delle canzoni popolari
-
         for (let i = 0; i < 5; i++) {
             const track = fullData.tracks[i];
             const trackItem = document.createElement("li");
@@ -80,12 +84,8 @@ fetch(urlAPI)
             popularList.appendChild(trackItem);
         }
 
-
-
         console.log("Artista:", fullData.artist);
         console.log("Canzoni:", fullData.tracks);
-
-
 
     })
     .catch((error) => {
