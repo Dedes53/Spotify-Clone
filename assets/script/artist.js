@@ -163,3 +163,36 @@ function displayAlbums(albums) {
 
     console.log(`Visualizzati ${albums.length} album`);
 }
+
+const showMoreBtn = document.getElementById("showMoreBtn");
+
+showMoreBtn.addEventListener("click", () => {
+    const currentCount = popularList.children.length;
+    const totalTracks = popularList.children.length + (fullData.tracks ? fullData.tracks.length : 0);
+
+    for (let i = currentCount; i < Math.min(currentCount + 5, totalTracks); i++) {
+        const track = fullData.tracks[i];
+        if (!track) break;
+
+        const trackItem = document.createElement("li");
+        trackItem.className = "d-flex align-items-center py-2 px-3 mb-2 rounded hover-bg-light";
+
+        trackItem.innerHTML = `
+                <span class="me-3 text-white-50 fw-bold" style="min-width: 20px;">${i + 1}</span>
+                <img src="${track.album ? track.album.cover_small : fullData.albums[0].cover_small}" 
+                     alt="${track.title} cover" 
+                     class="rounded me-3" 
+                     style="width: 40px; height: 40px;">
+                <span class="text-white flex-grow-1">${track.title}</span>
+                <span class="text-white-50 ms-3">${Math.floor(track.duration / 60)}:${(track.duration % 60).toString().padStart(2, '0')}</span>
+            `;
+
+        popularList.appendChild(trackItem);
+    }
+
+    if (popularList.children.length >= totalTracks) {
+        showMoreBtn.style.display = "none";
+    }
+});
+
+
