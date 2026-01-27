@@ -188,6 +188,7 @@ if (albumID) {
             const arrayOfTracksArtists = [];
             const arrayOfTracksRank = [];
             const arrayOfTracksLength = [];
+            const arrayOfTracksMusic = [];
 
             for (let i = 0; i < arrayOfTracks.length; i++) {
                 arrayOfTracksTitles.push(arrayOfTracks[i].title);
@@ -198,6 +199,7 @@ if (albumID) {
                 arrayOfTracksLength.push(
                     getProperStringTimeForTrack(arrayOfTracks[i].duration),
                 );
+                arrayOfTracksMusic.push(arrayOfTracks[i].preview);
             }
             // inserire qui codice che utilizza i dati estratti
 
