@@ -239,7 +239,7 @@ if (albumID) {
                                 </div>
                             </li>
                             <p class="col-1 p-0 text-end fs-7">${arrayOfTracksRank[i]}</p>
-                            <p class="col-3 text-end pe-4 alignment">${arrayOfTracksLength[i]}</p>`;
+                            <p class="col-3 text-end pe-4 alignment fs-7">${arrayOfTracksLength[i]}</p>`;
             }
 
             const imgPlayer = document.getElementById("img-player");
