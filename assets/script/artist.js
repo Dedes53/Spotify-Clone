@@ -3,7 +3,7 @@ const artistBg = document.getElementById("artistBg");
 const artistNameElement = document.getElementById("artistName");
 const fanNumber = document.getElementById("artistFan");
 const popularList = document.getElementById("popularList");
-
+const albumsContainer = document.getElementById("albumsContainer");
 
 // variabili fetch
 const params = new URLSearchParams(location.search);
@@ -16,78 +16,150 @@ const urlAPI = `https://striveschool-api.herokuapp.com/api/deezer/artist/${artis
 fetch(urlAPI)
     .then((res) => {
         if (res.ok) {
-            return res.json(); // ⚠️ AGGIUNTO: devi ritornare il JSON!
+            return res.json();
         } else {
             throw new Error("Errore nel recupero dei dettagli dell'artista");
         }
     })
     .then((artistData) => {
-        // artistData contiene tutte le info dell'artista
-        console.log(artistData);
+        console.log("ARTIST DATA:", artistData);
 
         const artistName = artistData.name;
-        const artistPicture = artistData.picture;
-        const artistPicture_sm = artistData.picture_small;
-        const artistPicture_md = artistData.picture_medium;
-        const artistPicture_lg = artistData.picture_big;
         const artistPicture_xl = artistData.picture_xl;
-        const nAlbum = artistData.nb_album;
         const nFan = artistData.nb_fan;
-        const radio = artistData.radio;
-
-        console.log(artistPicture_xl);
-        const tracksURL = artistData.tracklist;
-
 
         artistBg.src = artistPicture_xl;
         artistNameElement.innerText = artistName;
-        fanNumber.innerText = `${nFan.toLocaleString()} fan`;
+        fanNumber.innerText = `${nFan.toLocaleString('it-IT')} fan`;
 
-        // seconda fetch: canzoni dell'artista
-        // bisogna fare RETURN di questa fetch per passare i dati al .then() successivo
-        return fetch(tracksURL)
+        //albums dell'artista N.B. Top non funziona  
+        return fetch(`https://striveschool-api.herokuapp.com/api/deezer/artist/${artistID}/albums`)
             .then(res => {
                 if (res.ok) {
                     return res.json();
                 } else {
-                    throw new Error("Errore nel recupero delle canzoni");
+                    throw new Error("Errore nel recupero degli album");
                 }
             })
-            .then(tracksData => {
-                console.log(tracksData.data); // array delle canzoni
+            .then(albumsData => {
+                console.log("ALBUMS DATA:", albumsData.data);
 
-                // CREO UN OGGETTO CHE CONTIENE SIA I DATI ARTISTA CHE LE CANZONI
-                // come prima devo ritornarlo per averlo disponibile nel .then() successivo
-                return {
-                    artist: artistData,    // Tutti i dati dell'artista
-                    tracks: tracksData.data // Array di canzoni
-                };
+                // se ci sono album, prendo le tracce dal primo album
+                if (albumsData.data && albumsData.data.length > 0) {
+                    const firstAlbumId = albumsData.data[0].id;
+
+                    return fetch(`https://striveschool-api.herokuapp.com/api/deezer/album/${firstAlbumId}`)
+                        .then(res => {
+                            if (res.ok) {
+                                return res.json();
+                            } else {
+                                throw new Error("Errore nel recupero delle tracce");
+                            }
+                        })
+                        .then(albumDetails => {
+                            console.log("ALBUM DETAILS:", albumDetails);
+
+                            return {
+                                artist: artistData,
+                                tracks: albumDetails.tracks.data,
+                                albums: albumsData.data
+                            };
+                        });
+                } else {
+                    return {
+                        artist: artistData,
+                        tracks: [],
+                        albums: []
+                    };
+                }
             });
     })
     .then((fullData) => {
-        // fullData = {
-        //   artist: { name: "...", picture_xl: "...", nb_album: 15, ... },
-        //   tracks: [ {canzone1}, {canzone2}, ... ]
-        // }
-
-        // popolo la lista popularList delle canzoni popolari
-        for (let i = 0; i < 5; i++) {
-            const track = fullData.tracks[i];
-            const trackItem = document.createElement("li");
-            trackItem.innerHTML = `
-                <span class="track-index">${i + 1}</span>
-                <img src="${track.album.cover_small}" alt="${track.title} cover">
-                <span>${track.title}</span>
-                <span>${Math.floor(track.duration / 60)}:${(track.duration % 60).toString().padStart(2, '0')}</span>
-            `;
-
-            popularList.appendChild(trackItem);
-        }
-
         console.log("Artista:", fullData.artist);
         console.log("Canzoni:", fullData.tracks);
+        console.log("Album:", fullData.albums);
+
+        // popolo la lista delle canzoni più popolari
+        if (fullData.tracks && fullData.tracks.length > 0) {
+            // per ora messo solo 5 canzoni nella lista, modificare se vogliamo che si possa espandere e mostrare anche altre 
+            for (let i = 0; i < Math.min(5, fullData.tracks.length); i++) {
+                const track = fullData.tracks[i];
+                const trackItem = document.createElement("li");
+
+                trackItem.className = "d-flex align-items-center py-2 px-3 mb-2 rounded hover-bg-light";
+
+                trackItem.innerHTML = `
+                    <span class="me-3 text-white-50 fw-bold" style="min-width: 20px;">${i + 1}</span>
+                    <img src="${track.album ? track.album.cover_small : fullData.albums[0].cover_small}" 
+                         alt="${track.title} cover" 
+                         class="rounded me-3" 
+                         style="width: 40px; height: 40px;">
+                    <span class="text-white flex-grow-1">${track.title}</span>
+                    <span class="text-white-50 ms-3">${Math.floor(track.duration / 60)}:${(track.duration % 60).toString().padStart(2, '0')}</span>
+                `;
+
+                popularList.appendChild(trackItem);
+            }
+        } else {
+            popularList.innerHTML = '<li class="text-white-50">Nessuna canzone disponibile</li>';
+        }
+
+        // popolo la griglia degli album
+        if (fullData.albums && fullData.albums.length > 0) {
+            displayAlbums(fullData.albums);
+        } else {
+            albumsContainer.innerHTML = '<p class="text-white">Nessun album disponibile</p>';
+        }
 
     })
     .catch((error) => {
         console.error("Si è verificato un errore:", error);
+
+        if (popularList) {
+            popularList.innerHTML = `<li class="text-danger">Errore: ${error.message}</li>`;
+        }
     });
+
+
+
+function displayAlbums(albums) {
+    if (!albumsContainer) {
+        console.warn("Contenitore album non trovato nel DOM");
+        return;
+    }
+
+    albumsContainer.innerHTML = '';
+
+    albums.forEach(album => {
+        const albumCol = document.createElement("div");
+        albumCol.className = "col";
+
+        const year = album.release_date ? album.release_date.slice(0, 4) : "";
+
+        const recordType = album.record_type
+            ? album.record_type.charAt(0).toUpperCase() + album.record_type.slice(1)
+            : "Album";
+
+        albumCol.innerHTML = `
+            <div class="card bg-transparent border-0 h-100">
+                <a href="album.html?album=${album.id}" class="text-decoration-none">
+                    <div class="card-body p-3 rounded transition-all hover-bg-secondary">
+                        <img src="${album.cover_medium}" 
+                             alt="${album.title}" 
+                             class="card-img-top rounded mb-3 shadow">
+                        <h5 class="card-title text-white fw-semibold mb-2 text-truncate" style="font-size: 1rem;">
+                            ${album.title}
+                        </h5>
+                        <p class="card-text text-white-50 mb-0 small text-truncate">
+                            ${year} • ${recordType}
+                        </p>
+                    </div>
+                </a>
+            </div>
+        `;
+
+        albumsContainer.appendChild(albumCol);
+    });
+
+    console.log(`Visualizzati ${albums.length} album`);
+}

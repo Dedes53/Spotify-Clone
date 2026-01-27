@@ -188,6 +188,7 @@ if (albumID) {
             const arrayOfTracksArtists = [];
             const arrayOfTracksRank = [];
             const arrayOfTracksLength = [];
+            const arrayOfTracksMusic = [];
 
             for (let i = 0; i < arrayOfTracks.length; i++) {
                 arrayOfTracksTitles.push(arrayOfTracks[i].title);
@@ -198,8 +199,53 @@ if (albumID) {
                 arrayOfTracksLength.push(
                     getProperStringTimeForTrack(arrayOfTracks[i].duration),
                 );
+                arrayOfTracksMusic.push(arrayOfTracks[i].preview);
             }
             // inserire qui codice che utilizza i dati estratti
+            const mainAlbum = document.getElementById("main-album");
+            const olTrack = document.getElementById("ol-track");
+            getStrongImageColor(albumeImageUrlMedium, "#main-album");
+            mainAlbum.innerHTML = `<div class="col-lg-3">
+                        <img
+                            class="img-fluid"
+                            src="${albumeImageUrlMedium}"
+                            alt="" />
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="col-lg-12">
+                            <p>ALBUM</p>
+                            <h1>${albumTitle}</h1>
+                            <p>
+                                <a class="text-decoration-none text-black"
+                                    >${albumArtist}</a
+                                >
+                                ${albumYear} ${albumTracksNumber} brani
+                            </p>
+                        </div>
+                    </div>`;
+
+            for (i = 0; i < arrayOfTracks.length; i++) {
+                olTrack.innerHTML += `<li
+                                class="d-flex align-items-center mb-3 col-8 pe-0">
+                                <div class="me-3">${i + 1}</div>
+
+                                <div>
+                                    <div class="">${arrayOfTracksTitles[i]}</div>
+                                    <div class="">${arrayOfTracksArtists[i]}</div>
+                                </div>
+                            </li>
+                            <p class="col-1 p-0 text-end fs-7">${arrayOfTracksRank[i]}</p>
+                            <p class="col-3 text-end pe-4 alignment">${arrayOfTracksLength[i]}</p>`;
+            }
+
+            const imgPlayer = document.getElementById("img-player");
+            imgPlayer.src = albumeImageUrlMedium;
+
+            const songPlaying = document.getElementById("song-playing");
+            songPlaying.innerHTML = `<p class="text-white text-nowrap m-0">
+                        ${arrayOfTracksTitles[0]}
+                    </p>
+                    <p class="text-white text-nowrap m-0">${arrayOfTracksArtists[0]}</p>`;
 
             // fine codice che utilizza i dati estratti
         });
