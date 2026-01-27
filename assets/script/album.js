@@ -50,7 +50,11 @@ const getProperStringTimeForTrack = (secTime) => {
 // del DOM una volta che l'immagine è caricata. Prende due parametri: l'url dell'immagine e la stringa che si
 // utilizzerebbe nel css per individuare l'elemento da modificare. NB: 'load' è un evento asincrono.
 
-const getImageColor = (imageUrl, stringForQuerySelector = "body") => {
+const getImageColor = (
+    imageUrl,
+    stringForQuerySelector = "body",
+    stringForQuerySelectorGradient = "main",
+) => {
     // creo un'immagine senza appenderla al DOM
     const utilityImage = new Image();
     utilityImage.crossOrigin = "Anonymous";
@@ -75,6 +79,9 @@ const getImageColor = (imageUrl, stringForQuerySelector = "body") => {
         // assegniamo il colore all'elemento del DOM target
         const x = document.querySelector(stringForQuerySelector);
         x.style.backgroundColor = avgColor;
+        // assegniamo gradiente all'elemento del DOM indicato nel secondo parametro
+        const y = document.querySelector(stringForQuerySelectorGradient);
+        y.style.backgroundColor = "avgColor";
     });
 };
 
@@ -83,7 +90,11 @@ const getImageColor = (imageUrl, stringForQuerySelector = "body") => {
 // getStrongImageColor - apparentemente l'immagine di confronto ha un colore più acceso di quello della media. Proverò a ricalcolarlo
 // escludendo i pixel bianchi e, per completezza, escluderò anche quelli trasparenti.
 
-const getStrongImageColor = (imageUrl, stringForQuerySelector = "body") => {
+const getStrongImageColor = (
+    imageUrl,
+    stringForQuerySelector = "body",
+    stringForQuerySelectorGradient = "main",
+) => {
     // creo un'immagine senza appenderla al DOM
     const utilityImage = new Image();
     utilityImage.crossOrigin = "Anonymous";
@@ -140,9 +151,14 @@ const getStrongImageColor = (imageUrl, stringForQuerySelector = "body") => {
         }
 
         const avgColor = `rgb(${avgR}, ${avgG}, ${avgB})`;
+        const avgColorRgba = `rgba(${avgR}, ${avgG}, ${avgB}, 1)`;
         // assegniamo il colore all'elemento del DOM target
         const x = document.querySelector(stringForQuerySelector);
         x.style.backgroundColor = avgColor;
+        // assegniamo gradiente all'elemento del DOM indicato nel secondo parametro
+        const y = document.querySelector(stringForQuerySelectorGradient);
+        y.style.backgroundColor = avgColor;
+        y.style.backgroundImage = `linear-gradient(180deg, ${avgColorRgba} 0%, rgba(18, 18, 18, 1) 65%)`;
     });
 };
 
@@ -208,7 +224,7 @@ if (albumID) {
             // inserire qui codice che utilizza i dati estratti
             const mainAlbum = document.getElementById("main-album");
             const olTrack = document.getElementById("ol-track");
-            getStrongImageColor(albumeImageUrlMedium, "#main-album");
+            getStrongImageColor(albumeImageUrlMedium, "#main-album", "main");
             mainAlbum.innerHTML = `<div class="col-lg-3">
                         <img
                             class="img-fluid"
