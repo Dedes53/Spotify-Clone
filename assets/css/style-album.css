@@ -1,3 +1,7 @@
+body {
+    background-color: #121212;
+}
+
 .iconshadows {
     box-shadow: 0 1rem 2rem 20px rgba(0, 0, 0, 0.175);
 }
@@ -49,9 +53,9 @@ nav {
     font-size: 0.8rem;
 }
 
-.spotifybg {
+/* .spotifybg {
     background-color: #121212;
-}
+} */
 
 .spotify-green {
     color: #3be477;
