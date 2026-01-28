@@ -53,9 +53,9 @@ nav {
     font-size: 0.8rem;
 }
 
-/* .spotifybg {
+.spotifybg {
     background-color: #121212;
-} */
+}
 
 .spotify-green {
     color: #3be477;
@@ -143,4 +143,8 @@ nav {
 
 .btn-zero {
     all: unset;
+}
+
+.pb-6 {
+    padding-bottom: 90px;
 }
