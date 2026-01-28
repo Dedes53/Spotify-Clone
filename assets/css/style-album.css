@@ -140,3 +140,8 @@ nav {
     font-weight: 900;
     font-style: normal;
 }
+
+.btn-zero {
+    all: unset;
+    display: block;
+}

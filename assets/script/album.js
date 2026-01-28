@@ -76,12 +76,14 @@ const getImageColor = (
         const g = imageData[1];
         const b = imageData[2];
         const avgColor = `rgb(${r}, ${g}, ${b})`;
+        const avgColorRgba = `rgba(${avgR}, ${avgG}, ${avgB}, 1)`;
         // assegniamo il colore all'elemento del DOM target
         const x = document.querySelector(stringForQuerySelector);
         x.style.backgroundColor = avgColor;
         // assegniamo gradiente all'elemento del DOM indicato nel secondo parametro
         const y = document.querySelector(stringForQuerySelectorGradient);
         y.style.backgroundColor = "avgColor";
+        y.style.backgroundImage = `linear-gradient(180deg, ${avgColorRgba} 0%, rgba(18, 18, 18, 1) 65%)`;
     });
 };
 
@@ -222,9 +224,17 @@ if (albumID) {
                 arrayOfTracksMusic.push(arrayOfTracks[i].preview);
             }
             // inserire qui codice che utilizza i dati estratti
+            let firstSongPlaying = 0;
+            let songOrdered = true;
+            let autoP = false;
+            const imgPlayer = document.getElementById("img-player");
+            const songPlaying = document.getElementById("song-playing");
+            const audio = document.getElementById("player");
             const mainAlbum = document.getElementById("main-album");
             const olTrack = document.getElementById("ol-track");
+
             getStrongImageColor(albumeImageUrlMedium, "#main-album", "main");
+
             mainAlbum.innerHTML = `<div class="col-lg-3">
                         <img
                             class="img-fluid"
@@ -246,27 +256,54 @@ if (albumID) {
 
             for (i = 0; i < arrayOfTracks.length; i++) {
                 olTrack.innerHTML += `<li
-                                class="d-flex align-items-center mb-3 col-8 pe-0">
+                                class="d-flex align-items-center mb-3 col-8 pe-0" >
+                                <button type="button" class="btn-zero d-flex align-items-center" data-number="${i}">
                                 <div class="me-3">${i + 1}</div>
 
                                 <div>
                                     <div class="">${arrayOfTracksTitles[i]}</div>
                                     <div class="">${arrayOfTracksArtists[i]}</div>
-                                </div>
+                                </div></button>
                             </li>
                             <p class="col-1 p-0 text-end fs-7">${arrayOfTracksRank[i]}</p>
                             <p class="col-3 text-end pe-4 alignment fs-7">${arrayOfTracksLength[i]}</p>`;
             }
 
-            const imgPlayer = document.getElementById("img-player");
-            imgPlayer.src = albumeImageUrlMedium;
+            olTrack.addEventListener("click", (e) => {
+                e.preventDefault();
+                const btn = e.target.closest("button");
+                if (!btn) return;
+                const num = btn.dataset.number;
+                console.log(num);
+                firstSongPlaying = num;
+                autoP = true;
+                player(
+                    audio,
+                    arrayOfTracksMusic,
+                    imgPlayer,
+                    albumeImageUrlMedium,
+                    songPlaying,
+                    arrayOfTracksTitles,
+                    arrayOfTracksArtists,
+                    firstSongPlaying,
+                    songOrdered,
+                    autoP,
+                );
+            });
 
-            const songPlaying = document.getElementById("song-playing");
-            songPlaying.innerHTML = `<p class="text-white text-nowrap m-0">
-                        ${arrayOfTracksTitles[0]}
-                    </p>
-                    <p class="text-white text-nowrap m-0">${arrayOfTracksArtists[0]}</p>`;
+            console.log(arrayOfTracksTitles);
 
-            // fine codice che utilizza i dati estratti
+            player(
+                audio,
+                arrayOfTracksMusic,
+                imgPlayer,
+                albumeImageUrlMedium,
+                songPlaying,
+                arrayOfTracksTitles,
+                arrayOfTracksArtists,
+                firstSongPlaying,
+                songOrdered,
+                autoP,
+            );
         });
 }

@@ -127,7 +127,7 @@
                         alt="" />
                 </div>
                 <div class="d-flex flex-column" id="song-playing"></div>
-                <div class="">
+                <!-- <div class="">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
@@ -140,10 +140,10 @@
                         <path
                             d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                     </svg>
-                </div>
+                </div> -->
             </div>
-            <div class="flex-grow-1">
-                <div class="row">
+            <div class="flex-grow-1 text-center">
+                <!-- <div class="row">
                     <div
                         class="d-flex justify-content-center align-items-center flex-wrap col-12">
                         <svg
@@ -199,12 +199,14 @@
                             <path
                                 d="M11 5.466V4H5a4 4 0 0 0-3.584 5.777.5.5 0 1 1-.896.446A5 5 0 0 1 5 3h6V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192m3.81.086a.5.5 0 0 1 .67.225A5 5 0 0 1 11 13H5v1.466a.25.25 0 0 1-.41.192l-2.36-1.966a.25.25 0 0 1 0-.384l2.36-1.966a.25.25 0 0 1 .41.192V12h6a4 4 0 0 0 3.585-5.777.5.5 0 0 1 .225-.67Z" />
                         </svg>
-                    </div>
+                    </div> -->
 
-                    <div class="col-12 d-flex justify-content-center">
+                <!-- <div class="col-12 d-flex justify-content-center">
                         <input type="range" class="form-range" id="songtimer" />
                     </div>
-                </div>
+                </div> -->
+
+                <audio id="player" controls></audio>
             </div>
             <div class="">
                 <div class="d-flex align-items-center justify-content-end">
@@ -274,5 +276,6 @@
             integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
             crossorigin="anonymous"></script>
         <script src="./assets/script/album.js"></script>
+        <script src="./assets/script/player.js"></script>
     </body>
 </html>
