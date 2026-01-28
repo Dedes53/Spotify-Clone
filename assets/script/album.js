@@ -322,7 +322,7 @@ if (albumID) {
                 e.preventDefault();
                 const btn = e.target.closest("button");
                 if (!btn) return;
-                const num = btn.dataset.number;
+                const num = Number(btn.dataset.number);
                 firstSongPlaying = num;
                 autoP = true;
                 player(
