@@ -107,7 +107,7 @@ function displayAlbums(albums) {
     }
 
     albumsContainer.innerHTML = ''; // "resetto" il contenitore per ricaricarlo 
-    albumsContainer.classList.add("d.flex", "flex-no-wrap", "overflow-auto"); // aggiungo classi per lo scorrimento orizzontale
+    albumsContainer.classList.add("d.flex", "flex-no-wrap", "overflow-auto", "scrollbarStyle"); // aggiungo classi per lo scorrimento orizzontale
     albums.forEach(album => {
         const albumCol = document.createElement("div");
         albumCol.className = "col";
