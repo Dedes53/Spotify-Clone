@@ -107,7 +107,7 @@ function displayAlbums(albums) {
     }
 
     albumsContainer.innerHTML = ''; // "resetto" il contenitore per ricaricarlo 
-
+    albumsContainer.classList.add("d.flex", "flex-no-wrap", "overflow-auto"); // aggiungo classi per lo scorrimento orizzontale
     albums.forEach(album => {
         const albumCol = document.createElement("div");
         albumCol.className = "col";
@@ -125,7 +125,15 @@ function displayAlbums(albums) {
                         <img src="${album.cover_medium}" 
                              alt="${album.title}" 
                              class="card-img-top rounded mb-3 shadow">
-                        <h5 class="card-title text-white fw-semibold mb-2 text-truncate" style="font-size: 1rem;">
+                        <h5 class="card-title text-white fw-semibold mb-2" 
+                            style="
+                                display: -webkit-box;
+                                -webkit-line-clamp: 2;
+                                -webkit-box-orient: vertical;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                line-height: 1.5;
+                                max-height: 3em;">
                             ${album.title}
                         </h5>
                         <p class="card-text text-white-50 mb-0 small text-truncate">
