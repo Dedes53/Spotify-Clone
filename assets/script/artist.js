@@ -280,24 +280,7 @@ fetch(urlAPI)
         if (fullData.tracks && fullData.tracks.length > 0) {
 
             // per ora messo solo 5 canzoni nella lista, modificare se vogliamo che si possa espandere e mostrare anche altre 
-            for (let i = 0; i < Math.min(5, fullData.tracks.length); i++) {
-                const track = fullData.tracks[i];
-                const trackItem = document.createElement("li");
-
-                trackItem.className = "d-flex align-items-center py-2 px-3 mb-2 rounded hover-bg-light";
-
-                trackItem.innerHTML = `
-                    <span class="me-3 text-white-50 fw-bold" style="min-width: 20px;">${i + 1}</span>
-                    <img src="${track.album ? track.album.cover_small : ''}" 
-                         alt="${track.title} cover" 
-                         class="rounded me-3" 
-                         style="width: 40px; height: 40px;">
-                    <span class="text-white flex-grow-1">${track.title}</span>
-                    <span class="text-white-50 ms-3">${Math.floor(track.duration / 60)}:${(track.duration % 60).toString().padStart(2, '0')}</span> 
-                `;
-
-                popularList.appendChild(trackItem);
-            }
+            showPopularTracks(5);
         } else {
             popularList.innerHTML = '<li class="text-white-50">Nessuna canzone disponibile</li>';
         }
@@ -364,7 +347,51 @@ function displayAlbums(albums) {
 
 // =================FINE POPOLAZIONE PAGINA DA API===========================================
 
+// funzionae per le popular tracks 
+function showPopularTracks(n) {
+    for (let i = 0; i < Math.min(n, fullData.tracks.length); i++) {
+        const track = fullData.tracks[i];
+        const trackItem = document.createElement("li");
+
+        trackItem.className = "d-flex align-items-center py-2 px-3 mb-2 rounded hover-bg-light";
+
+        trackItem.innerHTML = `
+                    <span class="me-3 text-white-50 fw-bold" style="min-width: 20px;">${i + 1}</span>
+                    <img src="${track.album ? track.album.cover_small : ''}" 
+                         alt="${track.title} cover" 
+                         class="rounded me-3" 
+                         style="width: 40px; height: 40px;">
+                    <span class="text-white flex-grow-1">${track.title}</span>
+                    <span class="text-white-50 ms-3">${Math.floor(track.duration / 60)}:${(track.duration % 60).toString().padStart(2, '0')}</span> 
+                `;
+
+        popularList.appendChild(trackItem);
+    }
+};
+
+const showMoreBtn = document.getElementById("showMoreBtn"); //button per ampliare la lista
+
+// funzione per gestire la lista delle popular tracks
+showMoreBtn.addEventListener("click", () => {
+    let shown;
+    if (popularList.children.length > 5) { shown = true; }
+    else { shown = false; }
+
+    if (shown === false) {
+        popularList.innerHTML = ""; // resetto la lista prima di aggiungere gli elementi
+
+        showPopularTracks(10);
+        showMoreBtn.innerText = "Mostra meno";
+        shown = true;
+    }
+    else {
+        popularList.innerHTML = ""; // resetto la lista prima di aggiungere gli elementi
+
+        showPopularTracks(5);
+        showMoreBtn.innerText = "Mostra altro";
+        shown = false;
+    }
 
 
-const showMoreBtn = document.getElementById("showMoreBtn");
 
+});
