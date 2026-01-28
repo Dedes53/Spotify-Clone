@@ -174,7 +174,7 @@ function showPopularTracks(n) {
     }
 };
 
-const showMoreBtn = document.getElementById("showMoreBtn"); //button per ampliare la lista
+const showMoreBtn = document.getElementById("togglePopular"); //button per ampliare la lista
 
 // funzione per gestire la lista delle popular tracks
 showMoreBtn.addEventListener("click", () => {
