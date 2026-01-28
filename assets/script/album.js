@@ -157,6 +157,16 @@ const getStrongImageColor = (
         // assegniamo il colore all'elemento del DOM target
         const x = document.querySelector(stringForQuerySelector);
         x.style.backgroundColor = avgColor;
+        // adeguiamo il color del testo al nuovo colore
+        const luma = (avgR * 299 + avgG * 587 + avgB * 114) / 1000;
+        console.log(luma);
+        console.log(avgColor);
+        if (luma >= 128) {
+            x.style.color = "#121212";
+        } else {
+            x.style.color = "#FFFFFF";
+        }
+
         // assegniamo gradiente all'elemento del DOM indicato nel secondo parametro
         const y = document.querySelector(stringForQuerySelectorGradient);
         y.style.backgroundColor = avgColor;
@@ -295,7 +305,7 @@ if (albumID) {
                             <p>ALBUM</p>
                             <h1>${albumTitle}</h1>
                             <p>
-                                <a class="text-decoration-none text-black"
+                                <a class="text-decoration-none" style="color:inherit"
                                     >${albumArtist}</a
                                 >
                                 ${albumYear} ${albumTracksNumber} brani
