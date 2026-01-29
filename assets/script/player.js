@@ -318,10 +318,16 @@
 //     }
 // };
 
-
-
-
-const playTrack = (audioElement, index, songs, images, titleElement, titles, artists, imgElement) => {
+const playTrack = (
+    audioElement,
+    index,
+    songs,
+    images,
+    titleElement,
+    titles,
+    artists,
+    imgElement,
+) => {
     audioElement.src = songs[index];
     imgElement.src = images[index];
 
@@ -334,23 +340,23 @@ const playTrack = (audioElement, index, songs, images, titleElement, titles, art
         </p>
     `;
 
-    if (typeof recentSongs !== 'undefined') {
+    if (typeof recentSongs !== "undefined") {
         recentSongs.add(index);
 
-        console.log('Canzone riprodotta:', {
+        console.log("Canzone riprodotta:", {
             indice: index,
             titolo: titles[index],
             artista: artists[index],
-            immagine: images[index]
+            immagine: images[index],
         });
-        console.log('Storico corrente (indici):', recentSongs.list);
-        console.log('Numero canzoni nello storico:', recentSongs.list.length);
+        console.log("Storico corrente (indici):", recentSongs.list);
+        console.log("Numero canzoni nello storico:", recentSongs.list.length);
     } else {
-        console.warn('recentSongs non è definito - storico non disponibile');
+        console.warn("recentSongs non è definito - storico non disponibile");
     }
 
     return audioElement.play().catch((err) => {
-        console.error('Errore nella riproduzione:', err);
+        console.error("Errore nella riproduzione:", err);
     });
 };
 
@@ -358,7 +364,7 @@ const player = (
     tagAudioElement,
     arrayOfSongs,
     tagImgForPlayer,
-    arrayOfImages,
+    image,
     tagTitleForPlayer,
     arrayOfTitles,
     arrayOfArtists,
@@ -371,14 +377,14 @@ const player = (
         audioElement: tagAudioElement,
         songs: arrayOfSongs,
         imgElement: tagImgForPlayer,
-        images: arrayOfImages,
+        images: image,
         titleElement: tagTitleForPlayer,
         titles: arrayOfTitles,
-        artists: arrayOfArtists
+        artists: arrayOfArtists,
     };
 
     tagAudioElement.src = arrayOfSongs[i];
-    tagImgForPlayer.src = arrayOfImages[i];
+    tagImgForPlayer.src = image;
 
     if (ordered) {
         document.querySelector("#random svg").classList.add("text-secondary");
@@ -468,11 +474,11 @@ const player = (
             tagAudioElement,
             i,
             arrayOfSongs,
-            arrayOfImages,
+            image,
             tagTitleForPlayer,
             arrayOfTitles,
             arrayOfArtists,
-            tagImgForPlayer
+            tagImgForPlayer,
         );
     }
 
@@ -488,7 +494,7 @@ const player = (
                 tagAudioElement,
                 arrayOfSongs,
                 tagImgForPlayer,
-                arrayOfImages,
+                image,
                 tagTitleForPlayer,
                 arrayOfTitles,
                 arrayOfArtists,
@@ -512,7 +518,7 @@ const player = (
                 tagAudioElement,
                 arrayOfSongs,
                 tagImgForPlayer,
-                arrayOfImages,
+                image,
                 tagTitleForPlayer,
                 arrayOfTitles,
                 arrayOfArtists,
@@ -535,7 +541,7 @@ const player = (
                 tagAudioElement,
                 arrayOfSongs,
                 tagImgForPlayer,
-                arrayOfImages,
+                image,
                 tagTitleForPlayer,
                 arrayOfTitles,
                 arrayOfArtists,
@@ -558,7 +564,7 @@ const player = (
                 tagAudioElement,
                 arrayOfSongs,
                 tagImgForPlayer,
-                arrayOfImages,
+                image,
                 tagTitleForPlayer,
                 arrayOfTitles,
                 arrayOfArtists,
@@ -581,7 +587,7 @@ const player = (
                 tagAudioElement,
                 arrayOfSongs,
                 tagImgForPlayer,
-                arrayOfImages,
+                image,
                 tagTitleForPlayer,
                 arrayOfTitles,
                 arrayOfArtists,
@@ -601,7 +607,7 @@ const player = (
                 tagAudioElement,
                 arrayOfSongs,
                 tagImgForPlayer,
-                arrayOfImages,
+                image,
                 tagTitleForPlayer,
                 arrayOfTitles,
                 arrayOfArtists,
@@ -621,7 +627,7 @@ const player = (
                 tagAudioElement,
                 arrayOfSongs,
                 tagImgForPlayer,
-                arrayOfImages,
+                image,
                 tagTitleForPlayer,
                 arrayOfTitles,
                 arrayOfArtists,
@@ -637,7 +643,7 @@ const player = (
                 tagAudioElement,
                 arrayOfSongs,
                 tagImgForPlayer,
-                arrayOfImages,
+                image,
                 tagTitleForPlayer,
                 arrayOfTitles,
                 arrayOfArtists,
@@ -658,7 +664,7 @@ const player = (
                 } else {
                     i = 0;
                     tagAudioElement.src = arrayOfSongs[i];
-                    tagImgForPlayer.src = arrayOfImages[i];
+                    tagImgForPlayer.src = image;
                     tagTitleForPlayer.innerHTML = `<p class="text-white text-nowrap m-0 text-truncate">
                         ${arrayOfTitles[i]}
                     </p>
@@ -672,11 +678,11 @@ const player = (
                 tagAudioElement,
                 i,
                 arrayOfSongs,
-                arrayOfImages,
+                image,
                 tagTitleForPlayer,
                 arrayOfTitles,
                 arrayOfArtists,
-                tagImgForPlayer
+                tagImgForPlayer,
             );
         };
     } else {
@@ -689,11 +695,11 @@ const player = (
                 tagAudioElement,
                 i,
                 arrayOfSongs,
-                arrayOfImages,
+                image,
                 tagTitleForPlayer,
                 arrayOfTitles,
                 arrayOfArtists,
-                tagImgForPlayer
+                tagImgForPlayer,
             );
         };
     }
