@@ -159,8 +159,6 @@ const getStrongImageColor = (
         x.style.backgroundColor = avgColor;
         // adeguiamo il color del testo al nuovo colore
         const luma = (avgR * 299 + avgG * 587 + avgB * 114) / 1000;
-        console.log(luma);
-        console.log(avgColor);
         if (luma >= 128) {
             x.style.color = "#121212";
         } else {
@@ -387,5 +385,110 @@ if (albumID) {
                 autoP,
                 repeatSong,
             );
+
+            // sistema like memorizzata in locale
+
+            //  l'array likesAlbumArray conterrà l'id degli album che piacciono all'utente
+
+            const likeBtn = document.getElementById("like-button");
+            let likesAlbumArray = [];
+            let doesItLike = false;
+            likesAlbumArray = JSON.parse(
+                localStorage.getItem("likesAlbumArray"),
+            );
+            if (!likesAlbumArray) {
+                likesAlbumArray = [];
+            }
+
+            for (let i = 0; i < likesAlbumArray.length; i++) {
+                if (likesAlbumArray[i] === albumID) {
+                    doesItLike = true;
+                }
+            }
+
+            if (doesItLike) {
+                likeBtn.innerHTML = `<svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="25"
+                                height="25"
+                                fill="currentColor"
+                                class="bi bi-heart-fill spotify-green"
+                                viewBox="0 0 16 16">
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                            </svg>`;
+            } else {
+                likeBtn.innerHTML = `<svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="25"
+                                height="25"
+                                fill="currentColor "
+                                class="bi bi-heart text-light ms-2 me-2"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+                            </svg>`;
+            }
+
+            likeBtn.onclick = (e) => {
+                e.preventDefault();
+
+                likesAlbumArray = JSON.parse(
+                    localStorage.getItem("likesAlbumArray"),
+                );
+                if (!likesAlbumArray) {
+                    likesAlbumArray = [];
+                    doesItLike = false;
+                }
+
+                for (let i = 0; i < likesAlbumArray.length; i++) {
+                    if (likesAlbumArray[i] === albumID) {
+                        doesItLike = true;
+                    }
+                }
+
+                if (!doesItLike) {
+                    likesAlbumArray.push(albumID);
+                    localStorage.setItem(
+                        "likesAlbumArray",
+                        JSON.stringify(likesAlbumArray),
+                    );
+                    likeBtn.innerHTML = `<svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="25"
+                                height="25"
+                                fill="currentColor"
+                                class="bi bi-heart-fill spotify-green"
+                                viewBox="0 0 16 16">
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                            </svg>`;
+                    doesItLike = true;
+                } else {
+                    likesAlbumArray = likesAlbumArray.filter(
+                        (item) => item !== albumID,
+                    );
+                    localStorage.setItem(
+                        "likesAlbumArray",
+                        JSON.stringify(likesAlbumArray),
+                    );
+                    likeBtn.innerHTML = `<svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="25"
+                                height="25"
+                                fill="currentColor "
+                                class="bi bi-heart text-light ms-2 me-2"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+                            </svg>`;
+                    doesItLike = false;
+                }
+            };
+        })
+        .catch((err) => {
+            console.log("error: ", err);
         });
 }
