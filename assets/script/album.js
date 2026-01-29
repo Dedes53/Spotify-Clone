@@ -237,6 +237,7 @@ if (albumID) {
             let firstSongPlaying = 0;
             let songOrdered = true;
             let autoP = false;
+            let repeatSong = true;
             const imgPlayer = document.getElementById("img-player");
             const songPlaying = document.getElementById("song-playing");
             const audio = document.getElementById("player");
@@ -248,6 +249,11 @@ if (albumID) {
 
             btnPlayAlbum.onclick = (e) => {
                 e.preventDefault();
+                if (audio.dataset.repeatData === "true") {
+                    repeatSong = true;
+                } else if (audio.dataset.repeatData === "false") {
+                    repeatSong = false;
+                }
 
                 firstSongPlaying = 0;
                 if (!autoP) {
@@ -263,6 +269,7 @@ if (albumID) {
                         firstSongPlaying,
                         songOrdered,
                         autoP,
+                        repeatSong,
                     );
                     btnPlayAlbum.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-stop-circle-fill spotify-green ms-2 me-2" viewBox="0 0 16 16">
   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M6.5 5A1.5 1.5 0 0 0 5 6.5v3A1.5 1.5 0 0 0 6.5 11h3A1.5 1.5 0 0 0 11 9.5v-3A1.5 1.5 0 0 0 9.5 5z"/>
@@ -280,6 +287,7 @@ if (albumID) {
                         firstSongPlaying,
                         songOrdered,
                         autoP,
+                        repeatSong,
                     );
                     btnPlayAlbum.innerHTML = `<svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -335,6 +343,13 @@ if (albumID) {
                 const num = Number(btn.dataset.number);
                 firstSongPlaying = num;
                 autoP = true;
+
+                if (audio.dataset.repeatData === "true") {
+                    repeatSong = true;
+                } else if (audio.dataset.repeatData === "false") {
+                    repeatSong = false;
+                }
+
                 player(
                     audio,
                     arrayOfTracksMusic,
@@ -346,11 +361,18 @@ if (albumID) {
                     firstSongPlaying,
                     songOrdered,
                     autoP,
+                    repeatSong,
                 );
                 btnPlayAlbum.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-stop-circle-fill spotify-green ms-2 me-2" viewBox="0 0 16 16">
   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M6.5 5A1.5 1.5 0 0 0 5 6.5v3A1.5 1.5 0 0 0 6.5 11h3A1.5 1.5 0 0 0 11 9.5v-3A1.5 1.5 0 0 0 9.5 5z"/>
 </svg>`;
             };
+
+            if (audio.dataset.repeatData === "true") {
+                repeatSong = true;
+            } else if (audio.dataset.repeatData === "false") {
+                repeatSong = false;
+            }
 
             player(
                 audio,
@@ -363,6 +385,7 @@ if (albumID) {
                 firstSongPlaying,
                 songOrdered,
                 autoP,
+                repeatSong,
             );
         });
 }

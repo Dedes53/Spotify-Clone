@@ -240,6 +240,8 @@ const player = (
     btnRepeat.onclick = (e) => {
         e.preventDefault();
         if (repeat) {
+            tagAudioElement.dataset.repeatData = "false";
+
             player(
                 tagAudioElement,
                 arrayOfSongs,
@@ -253,7 +255,9 @@ const player = (
                 true,
                 false,
             );
-        } else
+        } else {
+            tagAudioElement.dataset.repeatData = "true";
+
             player(
                 tagAudioElement,
                 arrayOfSongs,
@@ -267,6 +271,7 @@ const player = (
                 true,
                 true,
             );
+        }
     };
 
     if (ordered) {
