@@ -343,10 +343,10 @@ const playTrack = (audioElement, index, songs, images, titleElement, titles, art
             artista: artists[index],
             immagine: images[index]
         });
-        console.log('📋 Storico corrente (indici):', recentSongs.list);
-        console.log('📊 Numero canzoni nello storico:', recentSongs.list.length);
+        console.log('Storico corrente (indici):', recentSongs.list);
+        console.log('Numero canzoni nello storico:', recentSongs.list.length);
     } else {
-        console.warn('⚠️ recentSongs non è definito - storico non disponibile');
+        console.warn('recentSongs non è definito - storico non disponibile');
     }
 
     return audioElement.play().catch((err) => {

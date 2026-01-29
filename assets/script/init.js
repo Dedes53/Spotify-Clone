@@ -2,19 +2,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     const audioElement = document.getElementById('audio-player');
 
     if (!audioElement) {
-        console.log('⏭️ Player non presente in questa pagina');
+        console.log('Player non presente in questa pagina');
         return;
     }
 
-    console.log('🔄 Caricamento canzoni da API...');
+    console.log('Caricamento canzoni da API...');
 
     try {
-        // SOSTITUISCI CON IL TUO ENDPOINT
+
         const response = await fetch('https://tua-api.com/songs');
         const data = await response.json();
 
-        // Mappa i dati dall'API
-        const songs = data.map(song => song.audioUrl);      // ← Adatta al tuo JSON
+
+        const songs = data.map(song => song.audioUrl);
         const titles = data.map(song => song.title);
         const artists = data.map(song => song.artist);
         const images = data.map(song => song.coverUrl);
