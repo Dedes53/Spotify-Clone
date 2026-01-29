@@ -206,6 +206,7 @@ if (albumID) {
             const albumeImageUrlSmall = albumAllData.cover_small;
             const albumeImageUrlBig = albumAllData.cover_big;
             const albumArtist = albumAllData.artist.name;
+            const albumArtistId = albumAllData.artist.id;
             const albumArtistSmallPicture = albumAllData.artist.picture_small;
             const albumYear = albumAllData.release_date.slice(0, 4);
             const albumTracksNumber = albumAllData.tracks.data.length;
@@ -311,7 +312,7 @@ if (albumID) {
                             <p>ALBUM</p>
                             <h1>${albumTitle}</h1>
                             <p>
-                                <a class="text-decoration-none" style="color:inherit"
+                                <a href="./artist.html?artist=${albumArtistId}" class="text-decoration-none" style="color:inherit"
                                     >${albumArtist}</a
                                 >
                                 ${albumYear} ${albumTracksNumber} brani
