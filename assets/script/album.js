@@ -246,7 +246,7 @@ if (albumID) {
 
             getStrongImageColor(albumeImageUrlMedium, "#main-album", "main");
 
-            btnPlayAlbum.addEventListener("click", (e) => {
+            btnPlayAlbum.onclick = (e) => {
                 e.preventDefault();
 
                 firstSongPlaying = 0;
@@ -292,7 +292,7 @@ if (albumID) {
                                     d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814z" />
                             </svg>`;
                 }
-            });
+            };
 
             mainAlbum.innerHTML = `<div class="col-lg-3">
                         <img
@@ -328,7 +328,7 @@ if (albumID) {
                             <p class="col-3 text-end pe-4 alignment fs-7">${arrayOfTracksLength[i]}</p>`;
             }
 
-            olTrack.addEventListener("click", (e) => {
+            olTrack.onclick = (e) => {
                 e.preventDefault();
                 const btn = e.target.closest("button");
                 if (!btn) return;
@@ -350,7 +350,7 @@ if (albumID) {
                 btnPlayAlbum.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-stop-circle-fill spotify-green ms-2 me-2" viewBox="0 0 16 16">
   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M6.5 5A1.5 1.5 0 0 0 5 6.5v3A1.5 1.5 0 0 0 6.5 11h3A1.5 1.5 0 0 0 11 9.5v-3A1.5 1.5 0 0 0 9.5 5z"/>
 </svg>`;
-            });
+            };
 
             player(
                 audio,
