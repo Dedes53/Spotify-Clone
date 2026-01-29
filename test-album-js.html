@@ -39,10 +39,13 @@
                                 background-color: #b1bbc3;
                             }
 
-                            #search-result
-                                > div
-                                > div.col.col-auto.me-3.text-end {
+                            #last-div {
                                 max-width: 35%;
+                            }
+
+                            #search-block a {
+                                color: inherit;
+                                text-decoration: inherit;
                             }
                         </style>
                         <div
@@ -61,41 +64,31 @@
                                 id="erase-search"></button>
                             <div
                                 id="search-result"
-                                class="dropdown-menu w-100 show bg-secondary container rounded rounded-1"
+                                class="dropdown-menu w-100 show bg-secondary container rounded rounded-1 d-none"
                                 style="top: 100%">
-                                <div
+                                <!-- <div
                                     class="row py-2 flex-nowrap rounded rounded-2">
                                     <div class="col ms-2 col-auto">
-                                        <img
-                                            style="
-                                                height: 56px;
-                                                aspect-ratio: 1/1;
-                                            "
-                                            src="https://cdn-images.dzcdn.net/images/cover/e69dade74de5e1f3f524f1c985696330/56x56-000000-80-0-0.jpg"
-                                            alt="title" />
+                                        <a href="#">
+                                            <img
+                                                style="
+                                                    height: 56px;
+                                                    aspect-ratio: 1/1;
+                                                "
+                                                src="https://cdn-images.dzcdn.net/images/cover/e69dade74de5e1f3f524f1c985696330/56x56-000000-80-0-0.jpg"
+                                                alt="title" />
+                                        </a>
                                     </div>
-                                    <div class="col flex-grow-1">titolo</div>
-                                    <div class="col col-auto me-3 text-end">
-                                        artista <br />
-                                        album
+                                    <a href="#" class="col flex-grow-1">
+                                        titolo
+                                    </a>
+                                    <div
+                                        class="col col-auto me-3 text-end"
+                                        id="last-div">
+                                        <a href="#">artista</a> <br />
+                                        <a href="#">album</a>
                                     </div>
-                                </div>
-                                <div class="row py-2">
-                                    <div class="col ms-2 col-auto">
-                                        <img
-                                            style="
-                                                height: 56px;
-                                                aspect-ratio: 1/1;
-                                            "
-                                            src="https://cdn-images.dzcdn.net/images/cover/e69dade74de5e1f3f524f1c985696330/56x56-000000-80-0-0.jpg"
-                                            alt="title" />
-                                    </div>
-                                    <div class="col flex-grow-1">titolo</div>
-                                    <div class="col col-auto me-3">
-                                        artista <br />
-                                        album
-                                    </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>

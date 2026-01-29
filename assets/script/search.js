@@ -69,6 +69,10 @@ const eraseSearch = document.getElementById("erase-search");
 const searchResult = document.getElementById("search-result");
 const searchBlock = document.getElementById("search-block");
 
+window.addEventListener("pageshow", (e) => {
+    search.value = "";
+});
+
 // recuperiamo i valori inseriti nella casella di ricerca
 
 search.addEventListener("input", (e) => {
@@ -95,8 +99,10 @@ search.addEventListener("input", (e) => {
                 console.log(result);
                 const srcArrayOfTitle = [];
                 const srcArrayOfArtists = [];
+                const srcArrayOfArtistsId = [];
                 const srcArrayOfAlbum = [];
                 const srcArrayOfAlbumImgs = [];
+                const srcArrayOfAlbumId = [];
                 const srcArrayOfRank = [];
                 const srcArrayOfLength = [];
                 const srcArrayOfMusic = [];
@@ -105,8 +111,10 @@ search.addEventListener("input", (e) => {
                 for (let i = 0; i < result.length; i++) {
                     srcArrayOfTitle.push(result[i].title);
                     srcArrayOfArtists.push(result[i].artist.name);
+                    srcArrayOfArtistsId.push(result[i].artist.id);
                     srcArrayOfAlbum.push(result[i].album.title);
                     srcArrayOfAlbumImgs.push(result[i].album.cover_small);
+                    srcArrayOfAlbumId.push(result[i].album.id);
                     srcArrayOfRank.push(result[i].rank.toLocaleString("it-IT"));
                     srcArrayOfLength.push(
                         getProperStringTimeForTrack(result[i].duration),
@@ -125,6 +133,7 @@ search.addEventListener("input", (e) => {
                     for (let i = 0; i < 10; i++) {
                         searchResult.innerHTML += `<div class="row py-2 flex-nowrap rounded rounded-2">
                                     <div class="col ms-2 col-auto">
+                                        <a href="./album.html?album=${srcArrayOfAlbumId[i]}">
                                         <img
                                             style="
                                                 height: 56px;
@@ -132,18 +141,21 @@ search.addEventListener("input", (e) => {
                                             "
                                             src="${srcArrayOfAlbumImgs[i]}"
                                             alt="${srcArrayOfTitle[i]}" />
+                                        </a>
                                     </div>
-                                    <div class="col flex-grow-1">${srcArrayOfTitle[i]}</div>
-                                    <div class="col col-auto me-3 text-end">
-                                        ${srcArrayOfArtists[i]} <br />
-                                        ${srcArrayOfAlbum[i]}
+                                    <a href="./album.html?album=${srcArrayOfAlbumId[i]}" class="col flex-grow-1">${srcArrayOfTitle[i]}</a>
+                                    <div class="col col-auto me-3 text-end"
+                                    id="last-div">
+                                       <a href="./artist.html?artist=${srcArrayOfArtistsId[i]}"> ${srcArrayOfArtists[i]} </a>  <br />
+                                       <a href="./album.html?album=${srcArrayOfAlbumId[i]}"> ${srcArrayOfAlbum[i]} </a> 
                                     </div>
                                 </div>`;
                     }
                 } else {
                     for (let i = 0; i < result.length; i++) {
-                        searchResult.innerHTML += `<div class="py-2 flex-nowrap rounded rounded-2">
+                        searchResult.innerHTML += `<div class="row py-2 flex-nowrap rounded rounded-2">
                                     <div class="col ms-2 col-auto">
+                                        <a href="./album.html?album=${srcArrayOfAlbumId[i]}">
                                         <img
                                             style="
                                                 height: 56px;
@@ -151,11 +163,13 @@ search.addEventListener("input", (e) => {
                                             "
                                             src="${srcArrayOfAlbumImgs[i]}"
                                             alt="${srcArrayOfTitle[i]}" />
+                                        </a>
                                     </div>
-                                    <div class="col flex-grow-1">${srcArrayOfTitle[i]}</div>
-                                    <div class="col col-auto me-3 text-end">
-                                        ${srcArrayOfArtists[i]} <br />
-                                        ${srcArrayOfAlbum[i]}
+                                    <a href="./album.html?album=${srcArrayOfAlbumId[i]}" class="col flex-grow-1">${srcArrayOfTitle[i]}</a>
+                                    <div class="col col-auto me-3 text-end"
+                                    id="last-div">
+                                       <a href="./artist.html?artist=${srcArrayOfArtistsId[i]}"> ${srcArrayOfArtists[i]} </a>  <br />
+                                       <a href="./album.html?album=${srcArrayOfAlbumId[i]}"> ${srcArrayOfAlbum[i]} </a> 
                                     </div>
                                 </div>`;
                     }
