@@ -76,12 +76,14 @@ const getImageColor = (
         const g = imageData[1];
         const b = imageData[2];
         const avgColor = `rgb(${r}, ${g}, ${b})`;
+        const avgColorRgba = `rgba(${avgR}, ${avgG}, ${avgB}, 1)`;
         // assegniamo il colore all'elemento del DOM target
         const x = document.querySelector(stringForQuerySelector);
         x.style.backgroundColor = avgColor;
         // assegniamo gradiente all'elemento del DOM indicato nel secondo parametro
         const y = document.querySelector(stringForQuerySelectorGradient);
         y.style.backgroundColor = "avgColor";
+        y.style.backgroundImage = `linear-gradient(180deg, ${avgColorRgba} 0%, rgba(18, 18, 18, 1) 65%)`;
     });
 };
 
@@ -155,6 +157,14 @@ const getStrongImageColor = (
         // assegniamo il colore all'elemento del DOM target
         const x = document.querySelector(stringForQuerySelector);
         x.style.backgroundColor = avgColor;
+        // adeguiamo il color del testo al nuovo colore
+        const luma = (avgR * 299 + avgG * 587 + avgB * 114) / 1000;
+        if (luma >= 128) {
+            x.style.color = "#121212";
+        } else {
+            x.style.color = "#FFFFFF";
+        }
+
         // assegniamo gradiente all'elemento del DOM indicato nel secondo parametro
         const y = document.querySelector(stringForQuerySelectorGradient);
         y.style.backgroundColor = avgColor;
@@ -222,9 +232,74 @@ if (albumID) {
                 arrayOfTracksMusic.push(arrayOfTracks[i].preview);
             }
             // inserire qui codice che utilizza i dati estratti
+            let firstSongPlaying = 0;
+            let songOrdered = true;
+            let autoP = false;
+            let repeatSong = true;
+            const imgPlayer = document.getElementById("img-player");
+            const songPlaying = document.getElementById("song-playing");
+            const audio = document.getElementById("player");
             const mainAlbum = document.getElementById("main-album");
             const olTrack = document.getElementById("ol-track");
+            const btnPlayAlbum = document.getElementById("play-album");
+
             getStrongImageColor(albumeImageUrlMedium, "#main-album", "main");
+
+            btnPlayAlbum.onclick = (e) => {
+                e.preventDefault();
+                if (audio.dataset.repeatData === "true") {
+                    repeatSong = true;
+                } else if (audio.dataset.repeatData === "false") {
+                    repeatSong = false;
+                }
+
+                firstSongPlaying = 0;
+                if (!autoP) {
+                    autoP = true;
+                    player(
+                        audio,
+                        arrayOfTracksMusic,
+                        imgPlayer,
+                        albumeImageUrlMedium,
+                        songPlaying,
+                        arrayOfTracksTitles,
+                        arrayOfTracksArtists,
+                        firstSongPlaying,
+                        songOrdered,
+                        autoP,
+                        repeatSong,
+                    );
+                    btnPlayAlbum.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-stop-circle-fill spotify-green ms-2 me-2" viewBox="0 0 16 16">
+  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M6.5 5A1.5 1.5 0 0 0 5 6.5v3A1.5 1.5 0 0 0 6.5 11h3A1.5 1.5 0 0 0 11 9.5v-3A1.5 1.5 0 0 0 9.5 5z"/>
+</svg>`;
+                } else {
+                    autoP = false;
+                    player(
+                        audio,
+                        arrayOfTracksMusic,
+                        imgPlayer,
+                        albumeImageUrlMedium,
+                        songPlaying,
+                        arrayOfTracksTitles,
+                        arrayOfTracksArtists,
+                        firstSongPlaying,
+                        songOrdered,
+                        autoP,
+                        repeatSong,
+                    );
+                    btnPlayAlbum.innerHTML = `<svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="50"
+                                height="50"
+                                fill="currentColor"
+                                class="bi bi-play-circle-fill spotify-green ms-2 me-2"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814z" />
+                            </svg>`;
+                }
+            };
+
             mainAlbum.innerHTML = `<div class="col-lg-3">
                         <img
                             class="img-fluid"
@@ -236,7 +311,7 @@ if (albumID) {
                             <p>ALBUM</p>
                             <h1>${albumTitle}</h1>
                             <p>
-                                <a class="text-decoration-none text-black"
+                                <a class="text-decoration-none" style="color:inherit"
                                     >${albumArtist}</a
                                 >
                                 ${albumYear} ${albumTracksNumber} brani
@@ -246,27 +321,174 @@ if (albumID) {
 
             for (i = 0; i < arrayOfTracks.length; i++) {
                 olTrack.innerHTML += `<li
-                                class="d-flex align-items-center mb-3 col-8 pe-0">
+                                class="d-flex align-items-center mb-3 col-8 pe-0" >
+                                <button type="button" class="btn-zero d-flex align-items-center" data-number="${i}">
                                 <div class="me-3">${i + 1}</div>
 
                                 <div>
                                     <div class="">${arrayOfTracksTitles[i]}</div>
                                     <div class="">${arrayOfTracksArtists[i]}</div>
-                                </div>
+                                </div></button>
                             </li>
                             <p class="col-1 p-0 text-end fs-7">${arrayOfTracksRank[i]}</p>
                             <p class="col-3 text-end pe-4 alignment fs-7">${arrayOfTracksLength[i]}</p>`;
             }
 
-            const imgPlayer = document.getElementById("img-player");
-            imgPlayer.src = albumeImageUrlMedium;
+            olTrack.onclick = (e) => {
+                e.preventDefault();
+                const btn = e.target.closest("button");
+                if (!btn) return;
+                const num = Number(btn.dataset.number);
+                firstSongPlaying = num;
+                autoP = true;
 
-            const songPlaying = document.getElementById("song-playing");
-            songPlaying.innerHTML = `<p class="text-white text-nowrap m-0">
-                        ${arrayOfTracksTitles[0]}
-                    </p>
-                    <p class="text-white text-nowrap m-0">${arrayOfTracksArtists[0]}</p>`;
+                if (audio.dataset.repeatData === "true") {
+                    repeatSong = true;
+                } else if (audio.dataset.repeatData === "false") {
+                    repeatSong = false;
+                }
 
-            // fine codice che utilizza i dati estratti
+                player(
+                    audio,
+                    arrayOfTracksMusic,
+                    imgPlayer,
+                    albumeImageUrlMedium,
+                    songPlaying,
+                    arrayOfTracksTitles,
+                    arrayOfTracksArtists,
+                    firstSongPlaying,
+                    songOrdered,
+                    autoP,
+                    repeatSong,
+                );
+                btnPlayAlbum.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-stop-circle-fill spotify-green ms-2 me-2" viewBox="0 0 16 16">
+  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M6.5 5A1.5 1.5 0 0 0 5 6.5v3A1.5 1.5 0 0 0 6.5 11h3A1.5 1.5 0 0 0 11 9.5v-3A1.5 1.5 0 0 0 9.5 5z"/>
+</svg>`;
+            };
+
+            if (audio.dataset.repeatData === "true") {
+                repeatSong = true;
+            } else if (audio.dataset.repeatData === "false") {
+                repeatSong = false;
+            }
+
+            player(
+                audio,
+                arrayOfTracksMusic,
+                imgPlayer,
+                albumeImageUrlMedium,
+                songPlaying,
+                arrayOfTracksTitles,
+                arrayOfTracksArtists,
+                firstSongPlaying,
+                songOrdered,
+                autoP,
+                repeatSong,
+            );
+
+            // sistema like memorizzata in locale
+
+            //  l'array likesAlbumArray conterrà l'id degli album che piacciono all'utente
+
+            const likeBtn = document.getElementById("like-button");
+            let likesAlbumArray = [];
+            let doesItLike = false;
+            likesAlbumArray = JSON.parse(
+                localStorage.getItem("likesAlbumArray"),
+            );
+            if (!likesAlbumArray) {
+                likesAlbumArray = [];
+            }
+
+            for (let i = 0; i < likesAlbumArray.length; i++) {
+                if (likesAlbumArray[i] === albumID) {
+                    doesItLike = true;
+                }
+            }
+
+            if (doesItLike) {
+                likeBtn.innerHTML = `<svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="25"
+                                height="25"
+                                fill="currentColor"
+                                class="bi bi-heart-fill spotify-green"
+                                viewBox="0 0 16 16">
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                            </svg>`;
+            } else {
+                likeBtn.innerHTML = `<svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="25"
+                                height="25"
+                                fill="currentColor "
+                                class="bi bi-heart text-light ms-2 me-2"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+                            </svg>`;
+            }
+
+            likeBtn.onclick = (e) => {
+                e.preventDefault();
+
+                likesAlbumArray = JSON.parse(
+                    localStorage.getItem("likesAlbumArray"),
+                );
+                if (!likesAlbumArray) {
+                    likesAlbumArray = [];
+                    doesItLike = false;
+                }
+
+                for (let i = 0; i < likesAlbumArray.length; i++) {
+                    if (likesAlbumArray[i] === albumID) {
+                        doesItLike = true;
+                    }
+                }
+
+                if (!doesItLike) {
+                    likesAlbumArray.push(albumID);
+                    localStorage.setItem(
+                        "likesAlbumArray",
+                        JSON.stringify(likesAlbumArray),
+                    );
+                    likeBtn.innerHTML = `<svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="25"
+                                height="25"
+                                fill="currentColor"
+                                class="bi bi-heart-fill spotify-green"
+                                viewBox="0 0 16 16">
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                            </svg>`;
+                    doesItLike = true;
+                } else {
+                    likesAlbumArray = likesAlbumArray.filter(
+                        (item) => item !== albumID,
+                    );
+                    localStorage.setItem(
+                        "likesAlbumArray",
+                        JSON.stringify(likesAlbumArray),
+                    );
+                    likeBtn.innerHTML = `<svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="25"
+                                height="25"
+                                fill="currentColor "
+                                class="bi bi-heart text-light ms-2 me-2"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+                            </svg>`;
+                    doesItLike = false;
+                }
+            };
+        })
+        .catch((err) => {
+            console.log("error: ", err);
         });
 }

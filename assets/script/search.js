@@ -89,6 +89,7 @@ search.addEventListener("input", (e) => {
             })
             .then((res) => {
                 const result = res.data;
+                console.log(result);
                 const srcArrayOfTitle = [];
                 const srcArrayOfArtists = [];
                 const srcArrayOfAlbum = [];
