@@ -66,10 +66,13 @@ const getProperStringTimeForTrack = (secTime) => {
 
 const search = document.getElementById("search");
 const eraseSearch = document.getElementById("erase-search");
+const searchResult = document.getElementById("search-result");
+const searchBlock = document.getElementById("search-block");
 
 // recuperiamo i valori inseriti nella casella di ricerca
 
 search.addEventListener("input", (e) => {
+    searchResult.innerHTML = "";
     e.preventDefault;
     const query = e.target.value;
     if (query) {
@@ -97,6 +100,7 @@ search.addEventListener("input", (e) => {
                 const srcArrayOfRank = [];
                 const srcArrayOfLength = [];
                 const srcArrayOfMusic = [];
+                searchResult.innerHTML = "";
 
                 for (let i = 0; i < result.length; i++) {
                     srcArrayOfTitle.push(result[i].title);
@@ -108,6 +112,53 @@ search.addEventListener("input", (e) => {
                         getProperStringTimeForTrack(result[i].duration),
                     );
                     srcArrayOfMusic.push(result[i].preview);
+                }
+                console.log("result: " + result.length);
+
+                if (result.length > 10) {
+                    searchResult.classList.remove("d-none");
+                } else {
+                    searchResult.classList.add("d-none");
+                }
+
+                if (result.length > 10) {
+                    for (let i = 0; i < 10; i++) {
+                        searchResult.innerHTML += `<div class="row py-2 flex-nowrap rounded rounded-2">
+                                    <div class="col ms-2 col-auto">
+                                        <img
+                                            style="
+                                                height: 56px;
+                                                aspect-ratio: 1/1;
+                                            "
+                                            src="${srcArrayOfAlbumImgs[i]}"
+                                            alt="${srcArrayOfTitle[i]}" />
+                                    </div>
+                                    <div class="col flex-grow-1">${srcArrayOfTitle[i]}</div>
+                                    <div class="col col-auto me-3 text-end">
+                                        ${srcArrayOfArtists[i]} <br />
+                                        ${srcArrayOfAlbum[i]}
+                                    </div>
+                                </div>`;
+                    }
+                } else {
+                    for (let i = 0; i < result.length; i++) {
+                        searchResult.innerHTML += `<div class="py-2 flex-nowrap rounded rounded-2">
+                                    <div class="col ms-2 col-auto">
+                                        <img
+                                            style="
+                                                height: 56px;
+                                                aspect-ratio: 1/1;
+                                            "
+                                            src="${srcArrayOfAlbumImgs[i]}"
+                                            alt="${srcArrayOfTitle[i]}" />
+                                    </div>
+                                    <div class="col flex-grow-1">${srcArrayOfTitle[i]}</div>
+                                    <div class="col col-auto me-3 text-end">
+                                        ${srcArrayOfArtists[i]} <br />
+                                        ${srcArrayOfAlbum[i]}
+                                    </div>
+                                </div>`;
+                    }
                 }
             })
             .catch((error) => {
@@ -122,8 +173,20 @@ search.addEventListener("input", (e) => {
     // attiviamo il pulsante "X" per svuotare la casella di ricerca
 
     eraseSearch.addEventListener("click", (er) => {
-        er.preventDefault;
+        er.preventDefault();
         e.target.value = "";
+        searchResult.innerHTML = "";
+        searchResult.classList.add("d-none");
         eraseSearch.classList.add("d-none");
+    });
+
+    document.addEventListener("click", (e) => {
+        if (!searchBlock.contains(e.target)) {
+            console.log("click nel search");
+            searchResult.innerHTML = "";
+            searchResult.classList.add("d-none");
+            eraseSearch.classList.add("d-none");
+            search.value = "";
+        }
     });
 });
