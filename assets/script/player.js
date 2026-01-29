@@ -51,7 +51,7 @@ const player = (
         if (tagAudioElement.volume === 0) {
             tagAudioElement.muted = true;
         } else {
-            tagAudioElement.muted = false;
+            // tagAudioElement.muted = false;
         }
         if (tagAudioElement.muted) {
             muteBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-volume-mute text-secondary" viewBox="0 0 16 16">
