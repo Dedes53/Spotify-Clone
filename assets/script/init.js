@@ -1,49 +1,51 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const songs = [
-        'assets/audio/canzone1.mp3',
-        'assets/audio/canzone2.mp3',
-        'assets/audio/canzone3.mp3',
-    ];
-
-    const titles = [
-        'Titolo Canzone 1',
-        'Titolo Canzone 2',
-        'Titolo Canzone 3',
-    ];
-
-    const artists = [
-        'Artista 1',
-        'Artista 2',
-        'Artista 3',
-    ];
-
-    const images = [
-        'assets/imgs/cover1.jpg',
-        'assets/imgs/cover2.jpg',
-        'assets/imgs/cover3.jpg',
-    ];
-
+document.addEventListener('DOMContentLoaded', async () => {
     const audioElement = document.getElementById('audio-player');
-    const imgElement = document.getElementById('player-img');
-    const titleElement = document.getElementById('player-title');
 
-    if (audioElement) {
-        audioElement.volume = 0.5;
+    if (!audioElement) {
+        console.log('⏭️ Player non presente in questa pagina');
+        return;
     }
 
-    player(
-        audioElement,
-        songs,
-        imgElement,
-        images,
-        titleElement,
-        titles,
-        artists,
-        0,
-        true,
-        false,
-        true
-    );
+    console.log('🔄 Caricamento canzoni da API...');
 
-    console.log('✅ Player inizializzato con successo!');
+    try {
+        // SOSTITUISCI CON IL TUO ENDPOINT
+        const response = await fetch('https://tua-api.com/songs');
+        const data = await response.json();
+
+        // Mappa i dati dall'API
+        const songs = data.map(song => song.audioUrl);      // ← Adatta al tuo JSON
+        const titles = data.map(song => song.title);
+        const artists = data.map(song => song.artist);
+        const images = data.map(song => song.coverUrl);
+
+        const imgElement = document.getElementById('player-img');
+        const titleElement = document.getElementById('player-title');
+
+        if (!imgElement || !titleElement) {
+            console.error('Elementi player mancanti!');
+            return;
+        }
+
+        audioElement.volume = 0.5;
+
+        player(
+            audioElement,
+            songs,
+            imgElement,
+            images,
+            titleElement,
+            titles,
+            artists,
+            0,
+            true,
+            false,
+            true
+        );
+
+        console.log('Player inizializzato con', songs.length, 'canzoni');
+
+    } catch (error) {
+        console.error('Errore caricamento canzoni:', error);
+    }
 });
