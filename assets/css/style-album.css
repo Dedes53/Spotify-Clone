@@ -1,167 +1,167 @@
 body {
-  background-color: #121212;
+    background-color: #121212;
 }
 
 .iconshadows {
-  box-shadow: 0 1rem 2rem 20px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 1rem 2rem 20px rgba(0, 0, 0, 0.175);
 }
 
 input[type="range"]::-webkit-slider-thumb {
-  opacity: 0;
+    opacity: 0;
 }
 
 input[type="range"]::-moz-range-thumb {
-  opacity: 0;
+    opacity: 0;
 }
 
 input[type="range"]:hover::-webkit-slider-thumb {
-  opacity: 1;
+    opacity: 1;
 }
 
 input[type="range"]:hover::-moz-range-thumb {
-  opacity: 1;
+    opacity: 1;
 }
 
 input[type="range"]::-webkit-slider-thumb,
 input[type="range"]::-moz-range-thumb {
-  transition: opacity 0.2s ease;
+    transition: opacity 0.2s ease;
 }
 
 .navbar1 {
-  position: fixed;
-  bottom: 80px;
-  left: 0;
-  width: 100%;
-  height: 90px;
-  background-color: #181818;
-  border-top: 1px solid #282828;
-  z-index: 1000;
-  padding: 0px;
-  margin-inline: auto;
-  background-color: #4f4f4f;
+    position: fixed;
+    bottom: 80px;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    background-color: #181818;
+    border-top: 1px solid #282828;
+    z-index: 1000;
+    padding: 0px;
+    margin-inline: auto;
+    background-color: #4f4f4f;
 }
 .navbar2 {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 90px;
-  background-color: #181818;
-  border-top: 1px solid #282828;
-  z-index: 1000;
-  padding: 0;
-  margin-inline: auto;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    background-color: #181818;
+    border-top: 1px solid #282828;
+    z-index: 1000;
+    padding: 0;
+    margin-inline: auto;
 }
 
 #songtimer {
-  width: 50%;
+    width: 50%;
 }
 
 .volumeslider {
-  width: 35%;
-  margin-right: 0.75rem;
+    width: 35%;
+    margin-right: 0.75rem;
 }
 
 .fs-7 {
-  font-size: 0.8rem;
+    font-size: 0.8rem;
 }
 
 .spotifybg {
-  background-color: #121212;
+    background-color: #121212;
 }
 
 .spotify-green {
-  color: #3be477;
+    color: #3be477;
 }
 
 #sidebarLeft {
-  height: 100vh;
+    height: 100vh;
 }
 
 .scrollbarStyle::-webkit-scrollbar {
-  width: 8px;
+    width: 8px;
 }
 
 .scrollbarStyle::-webkit-scrollbar-track {
-  background: #121212;
+    background: #121212;
 }
 
 .scrollbarStyle::-webkit-scrollbar-thumb {
-  background: #4f4f4f;
+    background: #4f4f4f;
 }
 
 .scrollbarStyle::-webkit-scrollbar-thumb:hover {
-  background: #888;
+    background: #888;
 }
 
 .allignment {
-  line-height: 1;
+    line-height: 1;
 }
 
 .font {
-  font-family: "Circular", sans-serif;
+    font-family: "Circular", sans-serif;
 }
 
 .fw-3-italic {
-  font-family: "Circular", sans-serif;
-  font-weight: 300;
-  font-style: italic;
+    font-family: "Circular", sans-serif;
+    font-weight: 300;
+    font-style: italic;
 }
 .fw-4-italic {
-  font-family: "Circular", sans-serif;
-  font-weight: 400;
-  font-style: italic;
+    font-family: "Circular", sans-serif;
+    font-weight: 400;
+    font-style: italic;
 }
 .fw-5-italic {
-  font-family: "Circular", sans-serif;
-  font-weight: 500;
-  font-style: italic;
+    font-family: "Circular", sans-serif;
+    font-weight: 500;
+    font-style: italic;
 }
 .fw-7-italic {
-  font-family: "Circular", sans-serif;
-  font-weight: 700;
-  font-style: italic;
+    font-family: "Circular", sans-serif;
+    font-weight: 700;
+    font-style: italic;
 }
 .fw-9-italic {
-  font-family: "Circular", sans-serif;
-  font-weight: 900;
-  font-style: italic;
+    font-family: "Circular", sans-serif;
+    font-weight: 900;
+    font-style: italic;
 }
 
 .fw-3-normal {
-  font-family: "Circular", sans-serif;
-  font-weight: 300;
-  font-style: normal;
+    font-family: "Circular", sans-serif;
+    font-weight: 300;
+    font-style: normal;
 }
 .fw-4-normal {
-  font-family: "Circular", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+    font-family: "Circular", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 .fw-5-normal {
-  font-family: "Circular", sans-serif;
-  font-weight: 500;
-  font-style: normal;
+    font-family: "Circular", sans-serif;
+    font-weight: 500;
+    font-style: normal;
 }
 .fw-7-normal {
-  font-family: "Circular", sans-serif;
-  font-weight: 700;
-  font-style: normal;
+    font-family: "Circular", sans-serif;
+    font-weight: 700;
+    font-style: normal;
 }
 .fw-9-normal {
-  font-family: "Circular", sans-serif;
-  font-weight: 900;
-  font-style: normal;
+    font-family: "Circular", sans-serif;
+    font-weight: 900;
+    font-style: normal;
 }
 
 .btn-zero {
-  all: unset;
+    all: unset;
 }
 
 .pb-6 {
-  padding-bottom: 90px;
+    padding-bottom: 150px;
 }
 
 .pb-7 {
-  padding-bottom: 150px;
+    padding-bottom: 150px;
 }
