@@ -1,3 +1,84 @@
+const getStrongImageColor = (
+    imageUrl,
+    stringForQuerySelector = "body",
+    stringForQuerySelectorGradient = "main",
+) => {
+    // creo un'immagine senza appenderla al DOM
+    const utilityImage = new Image();
+    utilityImage.crossOrigin = "Anonymous";
+    utilityImage.src = imageUrl;
+
+    // Al caricamento importo l'immagine in js grazie ad un canvas e poi la ridimensiono
+
+    utilityImage.addEventListener("load", () => {
+        const imageCanvas = document.createElement("canvas");
+        const drawnContext = imageCanvas.getContext("2d");
+        // aumento il numero di pixel rispetto alla funzione precedente
+        const width = 80;
+        const height = 80;
+        imageCanvas.width = width;
+        imageCanvas.height = height;
+        // ora comprimo l'immagine
+        drawnContext.drawImage(utilityImage, 0, 0, width, height); //coordinate (0,0), larghezza e altezza nel canvas di destinazione
+        // estraiamo i dati del pixel
+        const imageData = drawnContext.getImageData(0, 0, width, height).data;
+
+        // eliminiamo pixel tendenti al bianco e al trasparenti
+        const noWhite = 200;
+        const noAlpha = 55;
+
+        // facciamo una media degli altri
+        let tR = 0;
+        let tG = 0;
+        let tB = 0;
+        let counter = 0;
+
+        for (let i = 0; i < imageData.length; i += 4) {
+            const r = imageData[i];
+            const g = imageData[i + 1];
+            const b = imageData[i + 2];
+            const a = imageData[i + 3];
+
+            if (a <= noAlpha) continue;
+            if (r >= noWhite && g >= noWhite && b >= noWhite) continue;
+
+            tR += r;
+            tG += g;
+            tB += b;
+            counter += 1;
+        }
+
+        let avgR = 0;
+        let avgG = 0;
+        let avgB = 0;
+
+        if (counter !== 0) {
+            avgR = tR / counter;
+            avgG = tG / counter;
+            avgB = tB / counter;
+        }
+
+        const avgColor = `rgb(${avgR}, ${avgG}, ${avgB})`;
+        const avgColorRgba = `rgba(${avgR}, ${avgG}, ${avgB}, 1)`;
+        // assegniamo il colore all'elemento del DOM target
+        const x = document.querySelector(stringForQuerySelector);
+        x.style.backgroundColor = avgColor;
+        // adeguiamo il color del testo al nuovo colore
+        const luma = (avgR * 299 + avgG * 587 + avgB * 114) / 1000;
+        if (luma >= 128) {
+            x.style.color = "#121212";
+        } else {
+            x.style.color = "#FFFFFF";
+        }
+
+        // assegniamo gradiente all'elemento del DOM indicato nel secondo parametro
+        const y = document.querySelector(stringForQuerySelectorGradient);
+        y.style.backgroundColor = avgColor;
+        y.style.backgroundImage = `linear-gradient(180deg, ${avgColorRgba} 0%, rgba(18, 18, 18, 1) 65%)`;
+    });
+};
+
+
 // variabili globali html 
 const artistBg = document.getElementById("artistBg"); // immagine sfondo dell'artista 
 const artistNameElement = document.getElementById("artistName"); // nome dell'artista 
@@ -34,6 +115,7 @@ fetch(urlAPI)
         artistBg.src = artistPicture_xl;
         artistNameElement.innerText = artistName;
         fanNumber.innerText = `${nFan.toLocaleString('it-IT')} fan`;
+        getStrongImageColor(artistPicture_xl, "#heroImg", "main");
 
         return fetch(`https://striveschool-api.herokuapp.com/api/deezer/artist/${artistID}/top?limit=50`)
             .then(res => {
@@ -88,6 +170,8 @@ fetch(urlAPI)
         } else {
             albumsContainer.innerHTML = '<p class="text-white">Nessun album disponibile</p>';
         }
+
+        
 
     })
     .catch((error) => {
@@ -200,3 +284,6 @@ showMoreBtn.addEventListener("click", () => {
 
 
 });
+
+
+
