@@ -171,7 +171,7 @@ fetch(urlAPI)
             albumsContainer.innerHTML = '<p class="text-white">Nessun album disponibile</p>';
         }
 
-        
+
 
     })
     .catch((error) => {
@@ -280,9 +280,6 @@ showMoreBtn.addEventListener("click", () => {
         showMoreBtn.innerText = "Mostra altro";
         shown = false;
     }
-
-
-
 });
 
 
